@@ -2,32 +2,61 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TrainConsistManagementApp {
+public class TrainConsistManagementApp{
 
     public static void main(String[] args) {
 
-        // Scanner for user input
-
         Scanner scanner = new Scanner(System.in);
 
-        // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Prompt user to start
-        System.out.println("Press Enter to initialize the train consist...");
-        scanner.nextLine();
+        // Create ArrayList for passenger bogies
+        List<String> passengerBogies = new ArrayList<>();
 
-        // Initialize empty list of bogies
-        List<String> trainConsist = new ArrayList<>();
+        // Adding bogies (User Input)
+        System.out.println("\nEnter Passenger Bogies to Add:");
 
-        // Display initial consist summary
-        System.out.println("\nTrain consist initialized successfully!");
+        System.out.print("Enter first bogie type (Sleeper): ");
+        String bogie1 = scanner.nextLine();
+        passengerBogies.add(bogie1);
 
-        // Display initial bogie count
-        System.out.println("Initial number of bogies: " + trainConsist.size());
+        System.out.print("Enter second bogie type (AC Chair): ");
+        String bogie2 = scanner.nextLine();
+        passengerBogies.add(bogie2);
 
-        // Program continues (placeholder for next use cases)
-        System.out.println("\nSystem ready for further operations...");
+        System.out.print("Enter third bogie type (First Class): ");
+        String bogie3 = scanner.nextLine();
+        passengerBogies.add(bogie3);
+
+        // Display bogies after insertion
+        System.out.println("\nPassenger Bogies after addition:");
+        System.out.println(passengerBogies);
+
+        // Remove a bogie
+        System.out.print("\nEnter a bogie to remove (example: AC Chair): ");
+        String removeBogie = scanner.nextLine();
+
+        if (passengerBogies.remove(removeBogie)) {
+            System.out.println(removeBogie + " removed successfully.");
+        } else {
+            System.out.println(removeBogie + " not found.");
+        }
+
+        // Check existence
+        System.out.print("\nEnter bogie to check existence (example: Sleeper): ");
+        String checkBogie = scanner.nextLine();
+
+        if (passengerBogies.contains(checkBogie)) {
+            System.out.println(checkBogie + " exists in the train.");
+        } else {
+            System.out.println(checkBogie + " does NOT exist in the train.");
+        }
+
+        // Final list
+        System.out.println("\nFinal Passenger Bogie List:");
+        System.out.println(passengerBogies);
+
+        System.out.println("\nProgram continues...");
 
         scanner.close();
     }
