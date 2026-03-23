@@ -1,5 +1,6 @@
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class TrainConsistManagementApp {
 
@@ -8,37 +9,37 @@ public class TrainConsistManagementApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== Train Consist Management App ===");
-        System.out.println("=== UC4: Maintain Ordered Train Consist ===");
+        System.out.println("=== UC5: Preserve Insertion Order of Bogies ===");
 
-        // Create LinkedList for train consist
-        LinkedList<String> train = new LinkedList<>();
+        // Create LinkedHashSet for train formation
+        Set<String> trainFormation = new LinkedHashSet<>();
 
-        // Adding initial bogies
-        System.out.println("\nAdding initial bogies...");
-        train.add("Engine");
-        train.add("Sleeper");
-        train.add("AC");
-        train.add("Cargo");
-        train.add("Guard");
+        // User input
+        System.out.print("\nEnter number of bogies to attach: ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // consume newline
 
-        System.out.println("Initial Train Consist:");
-        System.out.println(train);
+        // Adding bogies
+        for (int i = 1; i <= n; i++) {
+            System.out.print("Enter bogie " + i + ": ");
+            String bogie = scanner.nextLine();
 
-        // Insert Pantry Car at position 2
-        System.out.println("\nInserting Pantry Car at position 2...");
-        train.add(2, "Pantry");
+            boolean added = trainFormation.add(bogie);
 
-        System.out.println("After inserting Pantry:");
-        System.out.println(train);
+            if (added) {
+                System.out.println(bogie + " attached successfully.");
+            } else {
+                System.out.println(bogie + " already exists! Duplicate ignored.");
+            }
+        }
 
-        // Remove first and last bogie
-        System.out.println("\nRemoving first and last bogie...");
-        train.removeFirst();
-        train.removeLast();
+        // Intentionally adding duplicate (example)
+        System.out.println("\nAttempting to add duplicate bogie: Sleeper");
+        trainFormation.add("Sleeper"); // ignored automatically
 
-        // Final train consist
-        System.out.println("\nFinal Ordered Train Consist:");
-        System.out.println(train);
+        // Display final formation
+        System.out.println("\nFinal Train Formation (Insertion Order Preserved):");
+        System.out.println(trainFormation);
 
         System.out.println("\nProgram continues...");
 
