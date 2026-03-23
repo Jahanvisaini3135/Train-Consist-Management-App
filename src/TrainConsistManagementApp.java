@@ -1,6 +1,5 @@
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Set;
 
 public class TrainConsistManagementApp {
 
@@ -9,33 +8,37 @@ public class TrainConsistManagementApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== Train Consist Management App ===");
-        System.out.println("=== UC3: Track Unique Bogie IDs ===");
+        System.out.println("=== UC4: Maintain Ordered Train Consist ===");
 
-        // Create HashSet for bogie IDs
-        Set<String> bogieIds = new HashSet<>();
+        // Create LinkedList for train consist
+        LinkedList<String> train = new LinkedList<>();
 
-        // User input
-        System.out.print("\nEnter number of bogie IDs to add: ");
-        int n = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        // Adding initial bogies
+        System.out.println("\nAdding initial bogies...");
+        train.add("Engine");
+        train.add("Sleeper");
+        train.add("AC");
+        train.add("Cargo");
+        train.add("Guard");
 
-        // Adding bogie IDs
-        for (int i = 1; i <= n; i++) {
-            System.out.print("Enter Bogie ID " + i + ": ");
-            String id = scanner.nextLine();
+        System.out.println("Initial Train Consist:");
+        System.out.println(train);
 
-            boolean added = bogieIds.add(id);
+        // Insert Pantry Car at position 2
+        System.out.println("\nInserting Pantry Car at position 2...");
+        train.add(2, "Pantry");
 
-            if (added) {
-                System.out.println(id + " added successfully.");
-            } else {
-                System.out.println(id + " is duplicate and was ignored.");
-            }
-        }
+        System.out.println("After inserting Pantry:");
+        System.out.println(train);
 
-        // Display unique bogie IDs
-        System.out.println("\nFinal Unique Bogie IDs:");
-        System.out.println(bogieIds);
+        // Remove first and last bogie
+        System.out.println("\nRemoving first and last bogie...");
+        train.removeFirst();
+        train.removeLast();
+
+        // Final train consist
+        System.out.println("\nFinal Ordered Train Consist:");
+        System.out.println(train);
 
         System.out.println("\nProgram continues...");
 
