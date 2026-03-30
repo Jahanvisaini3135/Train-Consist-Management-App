@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 // Bogie class
 class Bogie {
@@ -20,7 +21,7 @@ class Bogie {
 
     @Override
     public String toString() {
-        return "Bogie Type: " + type + ", Capacity: " + capacity;
+        return "Capacity: " + capacity;
     }
 }
 
@@ -50,21 +51,34 @@ public class TrainConsistManagementApp {
         }
 
         // Display original list
-        System.out.println("\n--- Bogie List ---");
-        bogieList.forEach(System.out::println);
+        System.out.println("\n--- Original Bogie List ---");
+        for (Bogie b : bogieList) {
+            System.out.println("Type: " + b.getType() + ", Capacity: " + b.getCapacity());
+        }
 
-        // Step 2: Stream pipeline (map + reduce)
-        int totalSeats = bogieList.stream()
-                .map(b -> b.getCapacity())     // Extract capacity
-                .reduce(0, Integer::sum);      // Aggregate sum
+        // Step 2: Stream grouping
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(b -> b.getType()));
 
-        // Step 3: Display total capacity
-        System.out.println("\n--- Total Seating Capacity ---");
-        System.out.println("Total Seats in Train: " + totalSeats);
+        // Step 3: Display grouped result
+        System.out.println("\n--- Grouped Bogies by Type ---");
+
+        if (groupedBogies.isEmpty()) {
+            System.out.println("No bogies to group.");
+        } else {
+            for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+                System.out.println("\nBogie Type: " + entry.getKey());
+                for (Bogie b : entry.getValue()) {
+                    System.out.println("  Capacity: " + b.getCapacity());
+                }
+            }
+        }
 
         // Step 4: Verify original list unchanged
-        System.out.println("\n--- Original List After Aggregation (Unchanged) ---");
-        bogieList.forEach(System.out::println);
+        System.out.println("\n--- Original List After Grouping (Unchanged) ---");
+        for (Bogie b : bogieList) {
+            System.out.println("Type: " + b.getType() + ", Capacity: " + b.getCapacity());
+        }
 
         sc.close();
     }
