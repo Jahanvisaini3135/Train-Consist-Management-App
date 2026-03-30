@@ -1,18 +1,23 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 
-class Bogie {
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+
+
+class PassengerBogie {
     String type;
     int capacity;
 
-    public Bogie(String type, int capacity) {
+    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
+        }
         this.type = type;
         this.capacity = capacity;
-    }
-
-    public int getCapacity() {
-        return capacity;
     }
 
     @Override
@@ -25,71 +30,42 @@ public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        List<Bogie> bogieList = new ArrayList<>();
+        List<PassengerBogie> bogieList = new ArrayList<>();
 
 
-        System.out.print("Enter number of bogies: ");
+        System.out.print("Enter number of passenger bogies: ");
         int n = sc.nextInt();
-        sc.nextLine(); // consume newline
-
+        sc.nextLine();
         for (int i = 0; i < n; i++) {
-            System.out.println("\nEnter details for Bogie " + (i + 1));
+            try {
+                System.out.println("\nEnter details for Bogie " + (i + 1));
 
-            System.out.print("Enter bogie type: ");
-            String type = sc.nextLine();
+                System.out.print("Enter bogie type (Sleeper/AC Chair/First Class): ");
+                String type = sc.nextLine();
 
-            System.out.print("Enter seating capacity: ");
-            int capacity = sc.nextInt();
-            sc.nextLine();
-
-            bogieList.add(new Bogie(type, capacity));
-        }
-
-       System.out.println("\n--- Original Bogie List ---");
-        bogieList.forEach(System.out::println);
-
-        int threshold = 60;
+                System.out.print("Enter seating capacity: ");
+                int capacity = sc.nextInt();
+                sc.nextLine();
 
 
-        long startLoop = System.nanoTime();
+                PassengerBogie bogie = new PassengerBogie(type, capacity);
 
-        List<Bogie> loopResult = new ArrayList<>();
-        for (Bogie b : bogieList) {
-            if (b.getCapacity() > threshold) {
-                loopResult.add(b);
+                bogieList.add(bogie);
+                System.out.println("Bogie added successfully ✅");
+
+            } catch (InvalidCapacityException e) {
+                System.out.println("Error: " + e.getMessage() + " ❌");
+                System.out.println("Bogie NOT added. Please enter valid data.");
             }
         }
 
-        long endLoop = System.nanoTime();
-        long loopTime = endLoop - startLoop;
 
+        System.out.println("\n--- Valid Passenger Bogies ---");
 
-        long startStream = System.nanoTime();
-
-        List<Bogie> streamResult = bogieList.stream()
-                .filter(b -> b.getCapacity() > threshold)
-                .collect(Collectors.toList());
-
-        long endStream = System.nanoTime();
-        long streamTime = endStream - startStream;
-
-        System.out.println("\n--- Loop Filtering Result ---");
-        loopResult.forEach(System.out::println);
-
-        System.out.println("\n--- Stream Filtering Result ---");
-        streamResult.forEach(System.out::println);
-
-
-        System.out.println("\n--- Performance Comparison ---");
-        System.out.println("Loop Execution Time   : " + loopTime + " ns");
-        System.out.println("Stream Execution Time : " + streamTime + " ns");
-
-
-        System.out.println("\n--- Result Comparison ---");
-        if (loopResult.size() == streamResult.size()) {
-            System.out.println("Both approaches produce SAME results ✅");
+        if (bogieList.isEmpty()) {
+            System.out.println("No valid bogies added.");
         } else {
-            System.out.println("Mismatch in results ❌");
+            bogieList.forEach(System.out::println);
         }
 
         sc.close();
