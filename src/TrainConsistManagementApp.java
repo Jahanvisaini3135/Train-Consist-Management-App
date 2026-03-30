@@ -1,7 +1,6 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
-// Base Bogie class
+// Bogie class
 class Bogie {
     String type;
     int capacity;
@@ -51,29 +50,20 @@ public class TrainConsistManagementApp {
         }
 
         // Display original list
-        System.out.println("\n--- Original Bogie List ---");
+        System.out.println("\n--- Bogie List ---");
         bogieList.forEach(System.out::println);
 
-        // Step 2: Get threshold from user
-        System.out.print("\nEnter capacity threshold: ");
-        int threshold = sc.nextInt();
+        // Step 2: Stream pipeline (map + reduce)
+        int totalSeats = bogieList.stream()
+                .map(b -> b.getCapacity())     // Extract capacity
+                .reduce(0, Integer::sum);      // Aggregate sum
 
-        // Step 3: Stream filtering
-        List<Bogie> filteredBogies = bogieList.stream()
-                .filter(b -> b.getCapacity() > threshold)
-                .collect(Collectors.toList());
+        // Step 3: Display total capacity
+        System.out.println("\n--- Total Seating Capacity ---");
+        System.out.println("Total Seats in Train: " + totalSeats);
 
-        // Step 4: Display filtered bogies
-        System.out.println("\n--- Filtered Bogies (Capacity > " + threshold + ") ---");
-
-        if (filteredBogies.isEmpty()) {
-            System.out.println("No bogies match the criteria.");
-        } else {
-            filteredBogies.forEach(System.out::println);
-        }
-
-        // Step 5: Verify original list unchanged
-        System.out.println("\n--- Original List After Filtering (Unchanged) ---");
+        // Step 4: Verify original list unchanged
+        System.out.println("\n--- Original List After Aggregation (Unchanged) ---");
         bogieList.forEach(System.out::println);
 
         sc.close();
