@@ -1,15 +1,24 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TrainConsistManagementApp {
 
+    public static boolean binarySearch(String[] bogieIds, String key) {
 
-    public static boolean linearSearch(String[] bogieIds, String key) {
+        int left = 0;
+        int right = bogieIds.length - 1;
 
-        for (int i = 0; i < bogieIds.length; i++) {
+        while (left <= right) {
+            int mid = (left + right) / 2;
 
+            int comparison = bogieIds[mid].compareTo(key);
 
-            if (bogieIds[i].equals(key)) {
-                return true;
+            if (comparison == 0) {
+                return true; // Found
+            } else if (comparison < 0) {
+                left = mid + 1; // Search right half
+            } else {
+                right = mid - 1; // Search left half
             }
         }
 
@@ -19,7 +28,7 @@ public class TrainConsistManagementApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== Train Consist Management App (UC18 - Linear Search) ===");
+        System.out.println("=== Train Consist Management App (UC19 - Binary Search) ===");
 
         try {
 
@@ -35,11 +44,16 @@ public class TrainConsistManagementApp {
             }
 
 
-            System.out.print("\nEnter bogie ID to search: ");
+            Arrays.sort(bogieIds);
+
+            System.out.println("\nSorted bogie IDs: " + Arrays.toString(bogieIds));
+
+
+            System.out.print("Enter bogie ID to search: ");
             String searchKey = scanner.nextLine();
 
 
-            boolean found = linearSearch(bogieIds, searchKey);
+            boolean found = binarySearch(bogieIds, searchKey);
 
 
             if (found) {
@@ -52,7 +66,7 @@ public class TrainConsistManagementApp {
             System.out.println("Invalid input! Please enter numeric values only.");
         } finally {
             scanner.close();
-            System.out.println("\n🚆 Search operation completed.");
+            System.out.println("\n🚆 Binary search operation completed.");
         }
     }
 }
