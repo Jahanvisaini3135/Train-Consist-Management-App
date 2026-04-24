@@ -1,96 +1,71 @@
 import java.util.Scanner;
 
-
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+public class TrainConsistManagementApp {
 
 
-abstract class GoodsBogie {
-    protected String shape;
-    protected String cargo;
-
-    public GoodsBogie(String shape) {
-        this.shape = shape;
-    }
+    public static void bubbleSort(int[] capacities) {
+        int n = capacities.length;
 
 
-    public void assignCargo(String cargoType) {
-        try {
-            System.out.println("\nAttempting to assign cargo: " + cargoType + " to " + shape + " bogie");
+        for (int i = 0; i < n - 1; i++) {
 
 
-            if (shape.equalsIgnoreCase("Rectangular") &&
-                    cargoType.equalsIgnoreCase("Petroleum")) {
+            for (int j = 0; j < n - i - 1; j++) {
 
-                throw new CargoSafetyException("Unsafe cargo! Petroleum cannot be assigned to Rectangular bogie.");
+
+                if (capacities[j] > capacities[j + 1]) {
+
+
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
             }
-
-
-            this.cargo = cargoType;
-            System.out.println("✅ Cargo assigned successfully: " + cargoType);
-
-        } catch (CargoSafetyException e) {
-
-            System.out.println("❌ Error: " + e.getMessage());
-
-        } finally {
-
-            System.out.println("🔍 Assignment attempt completed for " + shape + " bogie.");
         }
     }
 
-    public String getCargo() {
-        return cargo;
+
+    public static void printArray(int[] arr) {
+        for (int val : arr) {
+            System.out.print(val + " ");
+        }
+        System.out.println();
     }
-}
 
-
-class RectangularBogie extends GoodsBogie {
-    public RectangularBogie() {
-        super("Rectangular");
-    }
-}
-
-
-class CylindricalBogie extends GoodsBogie {
-    public CylindricalBogie() {
-        super("Cylindrical");
-    }
-}
-
-public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-
-        GoodsBogie rectangular = new RectangularBogie();
-        GoodsBogie cylindrical = new CylindricalBogie();
-
-        System.out.println("=== Train Consist Management App (UC15) ===");
+        System.out.println("=== Train Consist Management App (UC16 - Bubble Sort) ===");
 
         try {
 
-            System.out.print("\nEnter cargo for Rectangular Bogie: ");
-            String cargo1 = scanner.nextLine();
-            rectangular.assignCargo(cargo1);
+            System.out.print("Enter number of passenger bogies: ");
+            int n = Integer.parseInt(scanner.nextLine());
+
+            int[] capacities = new int[n];
 
 
-            System.out.print("\nEnter cargo for Cylindrical Bogie: ");
-            String cargo2 = scanner.nextLine();
-            cylindrical.assignCargo(cargo2);
+            System.out.println("Enter capacities:");
+            for (int i = 0; i < n; i++) {
+                capacities[i] = Integer.parseInt(scanner.nextLine());
+            }
 
 
-            System.out.print("\nEnter another cargo for Cylindrical Bogie: ");
-            String cargo3 = scanner.nextLine();
-            cylindrical.assignCargo(cargo3);
+            System.out.print("\nOriginal capacities: ");
+            printArray(capacities);
 
+            bubbleSort(capacities);
+
+
+            System.out.print("Sorted capacities: ");
+            printArray(capacities);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Please enter numeric values only.");
         } finally {
             scanner.close();
-            System.out.println("\n🚆 Application execution completed safely.");
+            System.out.println("\n🚆 Sorting operation completed.");
         }
     }
 }
